@@ -1,9 +1,60 @@
-<nav class="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur border-b border-zinc-800">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-    <a routerLink="/" class="flex items-center gap-2 group">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm">5</div>
-      <span class="text-white font-semibold text-lg tracking-tight group-hover:text-violet-400 transition-colors">Top 5</span>
+<nav class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
+
+    <a routerLink="/" class="flex items-center gap-3 group shrink-0">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center shadow-lg shadow-violet-900/40 group-hover:shadow-violet-700/50 transition-shadow duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18V5l12-2v13"/>
+          <circle cx="6" cy="18" r="3"/>
+          <circle cx="18" cy="16" r="3"/>
+        </svg>
+      </div>
+      <div>
+        <p class="text-white font-bold text-base leading-none tracking-tight group-hover:text-violet-300 transition-colors duration-200">Top 5</p>
+        <p class="text-zinc-500 text-[11px] leading-none mt-[5px] tracking-wide">five songs · one artist</p>
+      </div>
     </a>
-    <p class="hidden sm:block text-zinc-500 text-sm">My personal top 5 songs per artist</p>
+
+    <div class="hidden md:flex items-center gap-1">
+      @for (section of sections; track section.fragment) {
+        <a routerLink="/"
+           [fragment]="section.fragment"
+           [class]="activeFragment() === section.fragment
+             ? 'px-3 py-1.5 rounded-md text-xs font-medium text-white bg-zinc-800/80 border border-zinc-700'
+             : 'px-3 py-1.5 rounded-md text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-900 border border-transparent transition-colors'">
+          {{ section.label }}
+        </a>
+      }
+    </div>
+
+    <button type="button"
+            (click)="toggleMobile()"
+            [attr.aria-expanded]="mobileOpen()"
+            aria-label="Toggle navigation menu"
+            class="md:hidden p-2 -mr-2 text-zinc-400 hover:text-white transition-colors">
+      @if (mobileOpen()) {
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      }
+    </button>
+
   </div>
+
+  @if (mobileOpen()) {
+    <div class="md:hidden border-t border-zinc-800/60 bg-zinc-950/95 backdrop-blur-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col gap-1">
+        @for (section of sections; track section.fragment) {
+          <a routerLink="/"
+             [fragment]="section.fragment"
+             (click)="closeMobile()"
+             [class]="activeFragment() === section.fragment
+               ? 'px-3 py-2.5 rounded-md text-sm font-medium text-white bg-zinc-800/80 border border-zinc-700'
+               : 'px-3 py-2.5 rounded-md text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-900 border border-transparent transition-colors'">
+            {{ section.label }}
+          </a>
+        }
+      </div>
+    </div>
+  }
 </nav>

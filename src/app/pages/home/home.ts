@@ -17,12 +17,15 @@ export class Home {
 
   allArtists = this.artistService.artists;
   weeklyPick = this.artistService.getWeeklyPick();
+  throwbackPick = this.artistService.getThrowbackPick();
 
-  hotArtists = computed(() =>
-    [...this.allArtists()].sort((a, b) => b.viewCount - a.viewCount).slice(0, 5)
-  );
+  decadeOf(year?: number): string {
+    if (!year) return '';
+    return `${Math.floor((year % 100) / 10) * 10}s`;
+  }
+  featuredArtists = computed(() => this.allArtists().slice(0, 4));
 
-  allGenres = computed(() => this.artistService.getAllGenres());
+allGenres = computed(() => this.artistService.getAllGenres());
 
   filteredArtists = computed(() => {
     const q = this.searchQuery().toLowerCase().trim();

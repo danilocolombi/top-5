@@ -4,22 +4,24 @@
     <div class="relative overflow-hidden border-b border-zinc-800"
          [style.background]="'linear-gradient(135deg, ' + artist.avatarColor + '22 0%, transparent 60%), #18181b'">
       <div class="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-950/80"></div>
-      <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <button (click)="goBack()"
-                class="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-sm mb-8 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+                type="button"
+                class="flex items-center gap-2 text-zinc-400 hover:text-zinc-100 text-sm mb-8 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
           Back
         </button>
-        <div class="flex items-center gap-6">
-          <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-white text-5xl font-bold shadow-2xl shrink-0"
-               [style.background-color]="artist.avatarColor">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-6">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center text-white text-4xl sm:text-5xl font-bold shadow-2xl shrink-0"
+               [style.background-color]="artist.avatarColor"
+               aria-hidden="true">
             {{ artist.name[0] }}
           </div>
-          <div>
-            <h1 class="text-4xl font-bold text-white leading-tight">{{ artist.name }}</h1>
-            <div class="flex flex-wrap gap-2 mt-2">
+          <div class="min-w-0">
+            <h1 class="text-3xl sm:text-4xl font-bold text-white leading-tight">{{ artist.name }}</h1>
+            <div class="flex flex-wrap gap-2 mt-3">
               @for (genre of artist.genres; track genre) {
-                <span class="text-sm px-3 py-1 rounded-full border font-medium"
+                <span class="text-xs sm:text-sm px-3 py-1 rounded-full border font-medium"
                       [style.color]="artist.avatarColor"
                       [style.border-color]="artist.avatarColor + '50'"
                       [style.background-color]="artist.avatarColor + '18'">
@@ -30,7 +32,7 @@
           </div>
         </div>
         @if (artist.bio) {
-          <p class="mt-6 text-zinc-400 text-sm leading-relaxed max-w-xl">{{ artist.bio }}</p>
+          <p class="mt-6 text-zinc-300 text-sm sm:text-base leading-relaxed max-w-xl">{{ artist.bio }}</p>
         }
       </div>
     </div>
@@ -40,12 +42,17 @@
       <h2 class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-6">My Top 5</h2>
       <ol class="space-y-3">
         @for (song of artist.songs; track song.rank) {
-          <li class="flex items-center gap-5 bg-zinc-900 border border-zinc-800 rounded-xl px-6 py-4 hover:border-zinc-700 transition-colors">
-            <span class="text-4xl font-black text-zinc-800 w-8 shrink-0 leading-none select-none">{{ song.rank }}</span>
+          <li class="flex items-center gap-5 rounded-xl px-5 sm:px-6 py-4 transition-colors"
+              [class]="song.rank === 1
+                ? 'bg-zinc-900 border-2 hover:brightness-110'
+                : 'bg-zinc-900 border border-zinc-800 hover:border-zinc-700'"
+              [style.border-color]="song.rank === 1 ? artist.avatarColor + '70' : null">
+            <span class="text-4xl font-black w-8 shrink-0 leading-none select-none"
+                  [style.color]="song.rank === 1 ? artist.avatarColor : '#27272a'">{{ song.rank }}</span>
             <div class="min-w-0 flex-1">
-              <p class="text-white font-semibold text-base leading-tight">{{ song.title }}</p>
+              <p class="text-white font-semibold text-base leading-tight truncate">{{ song.title }}</p>
               @if (song.album || song.year) {
-                <p class="text-zinc-500 text-sm mt-0.5">
+                <p class="text-zinc-500 text-sm mt-0.5 truncate">
                   @if (song.album) { <span>{{ song.album }}</span> }
                   @if (song.album && song.year) { <span class="mx-1 text-zinc-700">·</span> }
                   @if (song.year) { <span>{{ song.year }}</span> }
@@ -59,9 +66,9 @@
       </ol>
     </div>
   } @else {
-    <div class="flex flex-col items-center justify-center min-h-screen gap-4 text-zinc-600">
-      <p class="text-5xl">🎵</p>
-      <p class="text-sm">Artist not found.</p>
+    <div class="flex flex-col items-center justify-center min-h-screen gap-4 text-zinc-400 px-4 text-center">
+      <p class="text-5xl" aria-hidden="true">🎵</p>
+      <p class="text-base">Artist not found.</p>
       <a routerLink="/" class="text-violet-400 hover:text-violet-300 text-sm transition-colors">← Back to home</a>
     </div>
   }

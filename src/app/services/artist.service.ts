@@ -556,6 +556,18 @@ const MOCK_ARTISTS: Artist[] = [
   },
 ];
 
+const THROWBACK_PICK: WeeklyPick = {
+  weekOf: '2026-05-05',
+  editorNote: 'Five songs from before the millennium. Cassettes optional.',
+  songs: [
+    { rank: 1, title: 'Superstition', album: 'Talking Book', year: 1972, artist: MOCK_ARTISTS.find(a => a.slug === 'stevie-wonder')! },
+    { rank: 2, title: 'Sweet Child O\' Mine', album: 'Appetite for Destruction', year: 1987, artist: MOCK_ARTISTS.find(a => a.slug === 'guns-n-roses')! },
+    { rank: 3, title: 'Smells Like Teen Spirit', album: 'Nevermind', year: 1991, artist: MOCK_ARTISTS.find(a => a.slug === 'nirvana')! },
+    { rank: 4, title: 'Wonderwall', album: '(What\'s the Story) Morning Glory?', year: 1995, artist: MOCK_ARTISTS.find(a => a.slug === 'oasis')! },
+    { rank: 5, title: 'California Love', album: 'All Eyez on Me', year: 1996, artist: MOCK_ARTISTS.find(a => a.slug === 'tupac')! },
+  ],
+};
+
 const WEEKLY_PICK: WeeklyPick = {
   weekOf: '2026-05-05',
   editorNote: 'Five songs. Five moods. One week.',
@@ -580,6 +592,10 @@ export class ArtistService {
 
   getWeeklyPick(): WeeklyPick {
     return WEEKLY_PICK;
+  }
+
+  getThrowbackPick(): WeeklyPick {
+    return THROWBACK_PICK;
   }
 
   incrementView(id: string): void {

@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ArtistService } from '../../services/artist.service';
 import { Artist } from '../../models/artist.model';
 
@@ -13,6 +13,7 @@ export class ArtistDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private artistService = inject(ArtistService);
   private location = inject(Location);
+  private router = inject(Router);
 
   artist: Artist | undefined;
 
@@ -25,6 +26,10 @@ export class ArtistDetail implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }
