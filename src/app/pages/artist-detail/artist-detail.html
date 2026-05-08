@@ -1,0 +1,68 @@
+<div class="min-h-screen bg-zinc-950 text-zinc-50">
+  @if (artist) {
+    <!-- Header -->
+    <div class="relative overflow-hidden border-b border-zinc-800"
+         [style.background]="'linear-gradient(135deg, ' + artist.avatarColor + '22 0%, transparent 60%), #18181b'">
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-950/80"></div>
+      <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <button (click)="goBack()"
+                class="flex items-center gap-2 text-zinc-500 hover:text-zinc-300 text-sm mb-8 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+          Back
+        </button>
+        <div class="flex items-center gap-6">
+          <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-white text-5xl font-bold shadow-2xl shrink-0"
+               [style.background-color]="artist.avatarColor">
+            {{ artist.name[0] }}
+          </div>
+          <div>
+            <h1 class="text-4xl font-bold text-white leading-tight">{{ artist.name }}</h1>
+            <div class="flex flex-wrap gap-2 mt-2">
+              @for (genre of artist.genres; track genre) {
+                <span class="text-sm px-3 py-1 rounded-full border font-medium"
+                      [style.color]="artist.avatarColor"
+                      [style.border-color]="artist.avatarColor + '50'"
+                      [style.background-color]="artist.avatarColor + '18'">
+                  {{ genre }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+        @if (artist.bio) {
+          <p class="mt-6 text-zinc-400 text-sm leading-relaxed max-w-xl">{{ artist.bio }}</p>
+        }
+      </div>
+    </div>
+
+    <!-- Top 5 Songs -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h2 class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-6">My Top 5</h2>
+      <ol class="space-y-3">
+        @for (song of artist.songs; track song.rank) {
+          <li class="flex items-center gap-5 bg-zinc-900 border border-zinc-800 rounded-xl px-6 py-4 hover:border-zinc-700 transition-colors">
+            <span class="text-4xl font-black text-zinc-800 w-8 shrink-0 leading-none select-none">{{ song.rank }}</span>
+            <div class="min-w-0 flex-1">
+              <p class="text-white font-semibold text-base leading-tight">{{ song.title }}</p>
+              @if (song.album || song.year) {
+                <p class="text-zinc-500 text-sm mt-0.5">
+                  @if (song.album) { <span>{{ song.album }}</span> }
+                  @if (song.album && song.year) { <span class="mx-1 text-zinc-700">·</span> }
+                  @if (song.year) { <span>{{ song.year }}</span> }
+                </p>
+              }
+            </div>
+            <div class="w-1.5 h-10 rounded-full shrink-0"
+                 [style.background-color]="song.rank === 1 ? artist.avatarColor : '#3f3f46'"></div>
+          </li>
+        }
+      </ol>
+    </div>
+  } @else {
+    <div class="flex flex-col items-center justify-center min-h-screen gap-4 text-zinc-600">
+      <p class="text-5xl">🎵</p>
+      <p class="text-sm">Artist not found.</p>
+      <a routerLink="/" class="text-violet-400 hover:text-violet-300 text-sm transition-colors">← Back to home</a>
+    </div>
+  }
+</div>

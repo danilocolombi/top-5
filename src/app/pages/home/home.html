@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-zinc-950 text-zinc-50">
+
+  <!-- Weekly Pick -->
+  <section class="relative overflow-hidden border-b border-zinc-800 bg-gradient-to-br from-violet-950/60 via-zinc-900 to-zinc-950">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(139,92,246,0.15),transparent_60%)]"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div class="flex items-center gap-2 mb-6">
+        <span class="text-xs font-semibold uppercase tracking-widest text-violet-400">Top 5 of the Week</span>
+        <span class="text-zinc-700">·</span>
+        <span class="text-xs text-zinc-500">Week of {{ weeklyPick.weekOf | date:'MMM d, y' }}</span>
+      </div>
+      @if (weeklyPick.editorNote) {
+        <blockquote class="border-l-2 border-violet-500 pl-4 text-zinc-400 text-sm italic leading-relaxed mb-8">
+          "{{ weeklyPick.editorNote }}"
+        </blockquote>
+      }
+      <ol class="space-y-3">
+        @for (entry of weeklyPick.songs; track entry.rank) {
+          <li class="flex items-center gap-4 bg-zinc-900/60 border border-zinc-800 rounded-xl px-5 py-4 hover:border-zinc-700 transition-colors">
+            <span class="text-2xl font-bold text-zinc-700 w-7 shrink-0 leading-tight">{{ entry.rank }}</span>
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-lg font-bold shrink-0 shadow"
+                 [style.background-color]="entry.artist.avatarColor">
+              {{ entry.artist.name[0] }}
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-white font-semibold leading-tight truncate">{{ entry.title }}</p>
+              <p class="text-zinc-500 text-xs mt-0.5">
+                {{ entry.artist.name }}{{ (entry.album || entry.year) ? ' · ' : '' }}{{ entry.album }}{{ entry.album && entry.year ? ', ' : '' }}{{ entry.year }}
+              </p>
+            </div>
+            <a [routerLink]="['/artist', entry.artist.slug]"
+               class="shrink-0 text-xs text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1">
+              Profile
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Hot Right Now -->
+  <section class="border-b border-zinc-800 bg-zinc-900/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <h2 class="text-sm font-semibold uppercase tracking-widest text-zinc-400 mb-6 flex items-center gap-2">
+        <span>🔥</span> Hot Right Now
+      </h2>
+      <div class="flex gap-4 overflow-x-auto pb-2 snap-x">
+        @for (artist of hotArtists(); track artist.id) {
+          <div class="snap-start shrink-0 w-56">
+            <app-artist-card [artist]="artist" />
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- All Artists -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-8 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-semibold uppercase tracking-widest text-zinc-400">All Artists</h2>
+        @if (searchQuery() || selectedGenre()) {
+          <button (click)="clearFilters()" class="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
+            Clear filters ✕
+          </button>
+        }
+      </div>
+      <input
+        type="search"
+        placeholder="Search artists..."
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value)"
+        class="w-full sm:w-80 bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+      />
+      <div class="flex flex-wrap gap-2">
+        @for (genre of allGenres(); track genre) {
+          <button
+            (click)="toggleGenre(genre)"
+            [class]="selectedGenre() === genre
+              ? 'px-3 py-1 rounded-full text-xs font-medium bg-violet-600 text-white border border-violet-500'
+              : 'px-3 py-1 rounded-full text-xs font-medium bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-600 hover:text-zinc-200 transition-colors'">
+            {{ genre }}
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (filteredArtists().length === 0) {
+      <div class="text-center py-20 text-zinc-600">
+        <p class="text-4xl mb-3">🎵</p>
+        <p class="text-sm">No artists found for "{{ searchQuery() }}"</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        @for (artist of filteredArtists(); track artist.id) {
+          <app-artist-card [artist]="artist" />
+        }
+      </div>
+      <p class="text-zinc-700 text-xs text-center mt-8">{{ filteredArtists().length }} artist{{ filteredArtists().length === 1 ? '' : 's' }}</p>
+    }
+  </section>
+</div>
