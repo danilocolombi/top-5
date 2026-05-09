@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ArtistService } from '../../services/artist.service';
+import { SeoService } from '../../services/seo.service';
 import { Artist } from '../../models/artist.model';
 
 @Component({
@@ -14,6 +15,7 @@ export class ArtistDetail implements OnInit {
   private artistService = inject(ArtistService);
   private location = inject(Location);
   private router = inject(Router);
+  private seo = inject(SeoService);
 
   artist: Artist | undefined;
 
@@ -22,6 +24,7 @@ export class ArtistDetail implements OnInit {
     this.artist = this.artistService.getBySlug(slug);
     if (this.artist) {
       this.artistService.incrementView(this.artist.id);
+      this.seo.setArtistSeo(this.artist);
     }
   }
 

@@ -1,7 +1,8 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ArtistService } from '../../services/artist.service';
+import { SeoService } from '../../services/seo.service';
 import { ArtistCard } from '../../components/artist-card/artist-card';
 
 @Component({
@@ -9,8 +10,13 @@ import { ArtistCard } from '../../components/artist-card/artist-card';
   imports: [RouterLink, DatePipe, ArtistCard],
   templateUrl: './home.html',
 })
-export class Home {
+export class Home implements OnInit {
   private artistService = inject(ArtistService);
+  private seo = inject(SeoService);
+
+  ngOnInit(): void {
+    this.seo.setHomeSeo();
+  }
 
   searchQuery = signal('');
   selectedGenre = signal('');
