@@ -6,13 +6,12 @@ export interface Song {
 }
 
 export interface Artist {
-  id: string;
+  id: number;
   slug: string;
   name: string;
   genres: string[];
   bio?: string;
   songs: Song[];
-  viewCount: number;
   avatarColor: string;
 }
 
