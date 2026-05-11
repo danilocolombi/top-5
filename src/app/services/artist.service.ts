@@ -9,21 +9,25 @@ export class ArtistService {
   private _artists = signal<Artist[]>([]);
   private _weeklyPick: WeeklyPick = EMPTY_PICK;
   private _throwbackPick: WeeklyPick = EMPTY_PICK;
+  private _editorPicks = signal<Artist[]>([]);
 
   readonly artists = this._artists.asReadonly();
+  readonly editorPicks = this._editorPicks.asReadonly();
 
   async load(): Promise<void> {
-    const [artistsRes, songsRes, picksRes, pickSongsRes] = await Promise.all([
+    const [artistsRes, songsRes, picksRes, pickSongsRes, editorRes] = await Promise.all([
       supabase.from('artists').select('*'),
       supabase.from('songs').select('*'),
       supabase.from('picks').select('*'),
       supabase.from('pick_songs').select('*'),
+      supabase.from('editor_picks').select('*'),
     ]);
 
     if (artistsRes.error) throw artistsRes.error;
     if (songsRes.error) throw songsRes.error;
     if (picksRes.error) throw picksRes.error;
     if (pickSongsRes.error) throw pickSongsRes.error;
+    if (editorRes.error) console.warn('editor_picks unavailable:', editorRes.error.message);
 
     const songsByArtist = new Map<number, Song[]>();
     for (const s of songsRes.data ?? []) {
@@ -64,6 +68,13 @@ export class ArtistService {
     };
     this._weeklyPick = buildPick('weekly');
     this._throwbackPick = buildPick('throwback');
+
+    const editorList = (editorRes.data ?? [])
+      .slice()
+      .sort((a, b) => a.rank - b.rank)
+      .map(e => artistById.get(e.artist_id))
+      .filter((a): a is Artist => !!a);
+    this._editorPicks.set(editorList);
   }
 
   getBySlug(slug: string): Artist | undefined {

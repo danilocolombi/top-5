@@ -30,7 +30,11 @@ export class Home implements OnInit {
     if (!year) return '';
     return `${Math.floor((year % 100) / 10) * 10}s`;
   }
-  featuredArtists = computed(() => this.allArtists().slice(0, 4));
+  private editorPicks = this.artistService.editorPicks;
+  featuredArtists = computed(() => {
+    const picks = this.editorPicks();
+    return picks.length > 0 ? picks : this.allArtists().slice(0, 4);
+  });
 
 allGenres = computed(() => this.artistService.getAllGenres());
 

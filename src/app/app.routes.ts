@@ -29,5 +29,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/admin/picks-edit/picks-edit').then(m => m.AdminPicksEdit),
   },
+  {
+    path: 'admin/editor-picks',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/admin/editor-picks-edit/editor-picks-edit').then(m => m.AdminEditorPicksEdit),
+  },
   { path: '**', redirectTo: '' },
 ];

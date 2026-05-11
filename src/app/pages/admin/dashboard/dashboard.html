@@ -13,7 +13,7 @@
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold text-white">Curated picks</h2>
       </div>
-      <div class="grid sm:grid-cols-2 gap-3">
+      <div class="grid sm:grid-cols-3 gap-3">
         <a routerLink="/admin/picks/weekly"
            class="block p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-violet-500/50 transition">
           <p class="text-xs uppercase tracking-wide text-violet-400 mb-1">Weekly</p>
@@ -23,6 +23,11 @@
            class="block p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-pink-500/50 transition">
           <p class="text-xs uppercase tracking-wide text-pink-400 mb-1">Throwback</p>
           <p class="text-white font-medium">Edit throwback pick</p>
+        </a>
+        <a routerLink="/admin/editor-picks"
+           class="block p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:border-amber-500/50 transition">
+          <p class="text-xs uppercase tracking-wide text-amber-400 mb-1">Featured</p>
+          <p class="text-white font-medium">Edit editor's picks</p>
         </a>
       </div>
     </section>
