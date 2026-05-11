@@ -29,7 +29,7 @@
       }
       <ol class="space-y-3">
         @for (entry of weeklyPick.songs; track entry.rank) {
-          <li class="flex items-center gap-4 rounded-xl px-5 py-4 transition-colors"
+          <li class="flex flex-wrap items-center gap-4 rounded-xl px-5 py-4 transition-colors"
               [class]="entry.rank === 1
                 ? 'bg-gradient-to-r from-amber-500/10 via-zinc-900/60 to-zinc-900/60 border border-amber-500/30 hover:border-amber-500/50'
                 : 'bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700'">
@@ -40,11 +40,12 @@
               {{ entry.artist.name[0] }}
             </div>
             <div class="min-w-0 flex-1">
-              <p class="text-white font-semibold leading-tight truncate">{{ entry.title }}</p>
+              <p class="text-white font-semibold leading-tight truncate">{{ entry.title | titlecase }}</p>
               <p class="text-zinc-500 text-xs mt-0.5 truncate">
-                {{ entry.artist.name }}{{ (entry.album || entry.year) ? ' · ' : '' }}{{ entry.album }}{{ entry.album && entry.year ? ', ' : '' }}{{ entry.year }}
+                {{ entry.artist.name | titlecase }}{{ (entry.album || entry.year) ? ' · ' : '' }}{{ entry.album | titlecase }}{{ entry.album && entry.year ? ', ' : '' }}{{ entry.year }}
               </p>
             </div>
+            <app-song-player [url]="entry.youtubeUrl" />
             <a [routerLink]="['/artist', entry.artist.slug]"
                [attr.aria-label]="'View ' + entry.artist.name + ' profile'"
                class="shrink-0 text-xs text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1">
@@ -94,7 +95,7 @@
       }
       <ol class="grid grid-cols-1 md:grid-cols-2 gap-3">
         @for (entry of throwbackPick.songs; track entry.rank) {
-          <li class="group relative flex items-center gap-4 rounded-xl px-5 py-4 bg-zinc-900/50 border border-zinc-800 hover:border-amber-500/40 hover:bg-zinc-900/80 transition-all"
+          <li class="group relative flex flex-wrap items-center gap-4 rounded-xl px-5 py-4 bg-zinc-900/50 border border-zinc-800 hover:border-amber-500/40 hover:bg-zinc-900/80 transition-all"
               [class.md:col-span-2]="entry.rank === 1">
             <span class="font-serif text-3xl font-bold w-8 shrink-0 leading-none text-amber-500/80 group-hover:text-amber-400 transition-colors">{{ entry.rank }}</span>
             <div class="w-11 h-11 rounded-full flex items-center justify-center text-white text-base font-bold shrink-0 ring-2 ring-amber-500/20 ring-offset-2 ring-offset-zinc-950"
@@ -104,15 +105,16 @@
             </div>
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2 mb-0.5">
-                <p class="text-white font-semibold leading-tight truncate">{{ entry.title }}</p>
+                <p class="text-white font-semibold leading-tight truncate">{{ entry.title | titlecase }}</p>
                 @if (entry.year) {
                   <span class="shrink-0 text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">{{ decadeOf(entry.year) }}</span>
                 }
               </div>
               <p class="text-zinc-500 text-xs truncate">
-                {{ entry.artist.name }}{{ (entry.album || entry.year) ? ' · ' : '' }}{{ entry.album }}{{ entry.album && entry.year ? ', ' : '' }}{{ entry.year }}
+                {{ entry.artist.name | titlecase }}{{ (entry.album || entry.year) ? ' · ' : '' }}{{ entry.album | titlecase }}{{ entry.album && entry.year ? ', ' : '' }}{{ entry.year }}
               </p>
             </div>
+            <app-song-player [url]="entry.youtubeUrl" />
             <a [routerLink]="['/artist', entry.artist.slug]"
                [attr.aria-label]="'View ' + entry.artist.name + ' profile'"
                class="shrink-0 text-xs text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1">

@@ -8,6 +8,7 @@ interface SongRow {
   title: string;
   album: string;
   year: string;
+  youtubeUrl: string;
 }
 
 @Component({
@@ -32,7 +33,7 @@ export class AdminArtistEdit implements OnInit {
     avatar_color: '#7c3aed',
   });
   songs = signal<SongRow[]>(
-    Array.from({ length: 5 }, () => ({ title: '', album: '', year: '' })),
+    Array.from({ length: 5 }, () => ({ title: '', album: '', year: '', youtubeUrl: '' })),
   );
   saving = signal(false);
   error = signal<string | null>(null);
@@ -63,6 +64,7 @@ export class AdminArtistEdit implements OnInit {
         title: s?.title ?? '',
         album: s?.album ?? '',
         year: s?.year != null ? String(s.year) : '',
+        youtubeUrl: s?.youtubeUrl ?? '',
       };
     });
     this.songs.set(rows);
@@ -93,6 +95,7 @@ export class AdminArtistEdit implements OnInit {
         title: s.title.trim(),
         album: s.album.trim() || null,
         year: s.year ? Number(s.year) : null,
+        youtube_url: s.youtubeUrl.trim() || null,
       }))
       .filter(s => s.title);
 

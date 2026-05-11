@@ -1,13 +1,14 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ArtistService } from '../../services/artist.service';
 import { SeoService } from '../../services/seo.service';
 import { ArtistCard } from '../../components/artist-card/artist-card';
+import { SongPlayer } from '../../components/song-player/song-player';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, DatePipe, ArtistCard],
+  imports: [RouterLink, DatePipe, TitleCasePipe, ArtistCard, SongPlayer],
   templateUrl: './home.html',
 })
 export class Home implements OnInit {

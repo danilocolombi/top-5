@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { TitleCasePipe } from '@angular/common';
 import { ArtistService } from '../../../services/artist.service';
 import { AdminService } from '../../../services/admin.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [RouterLink],
+  imports: [RouterLink, TitleCasePipe],
   templateUrl: './dashboard.html',
 })
 export class AdminDashboard {

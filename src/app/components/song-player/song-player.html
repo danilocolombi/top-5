@@ -1,0 +1,28 @@
+@if (videoId()) {
+  <button type="button"
+          (click)="toggle($event)"
+          [attr.aria-label]="expanded() ? 'Hide video' : 'Play video'"
+          [attr.aria-expanded]="expanded()"
+          class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-zinc-800/80 text-white hover:bg-red-600 transition-colors group/play"
+          [class.bg-red-600]="expanded()">
+    @if (expanded()) {
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+      </svg>
+    } @else {
+      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <polygon points="6 4 20 12 6 20 6 4" />
+      </svg>
+    }
+  </button>
+}
+@if (expanded() && embedUrl()) {
+  <div class="basis-full w-full mt-3 rounded-lg overflow-hidden bg-black aspect-video">
+    <iframe [src]="embedUrl()"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="w-full h-full"></iframe>
+  </div>
+}

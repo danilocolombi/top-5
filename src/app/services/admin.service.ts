@@ -15,6 +15,7 @@ export interface SongInput {
   title: string;
   album?: string | null;
   year?: number | null;
+  youtube_url?: string | null;
 }
 
 export interface PickSongInput {
@@ -22,6 +23,7 @@ export interface PickSongInput {
   title: string;
   album?: string | null;
   year?: number | null;
+  youtube_url?: string | null;
   artist_id: number;
 }
 

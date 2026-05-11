@@ -13,13 +13,13 @@
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-medium text-zinc-400 mb-1.5">Name</label>
-            <input type="text" [ngModel]="form().name"
+            <input type="text" title="Artist name" placeholder="Artist name" [ngModel]="form().name"
                    (ngModelChange)="form.set({ ...form(), name: $event })"
                    class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
           </div>
           <div>
             <label class="block text-xs font-medium text-zinc-400 mb-1.5">Slug (URL)</label>
-            <input type="text" [ngModel]="form().slug"
+            <input type="text" title="Slug" placeholder="url-slug" [ngModel]="form().slug"
                    (ngModelChange)="form.set({ ...form(), slug: $event })"
                    class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
           </div>
@@ -35,7 +35,7 @@
 
         <div>
           <label class="block text-xs font-medium text-zinc-400 mb-1.5">Bio</label>
-          <textarea rows="3" [ngModel]="form().bio"
+          <textarea rows="3" title="Bio" placeholder="Short artist bio" [ngModel]="form().bio"
                     (ngModelChange)="form.set({ ...form(), bio: $event })"
                     class="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500"></textarea>
         </div>
@@ -43,10 +43,10 @@
         <div>
           <label class="block text-xs font-medium text-zinc-400 mb-1.5">Avatar color (hex)</label>
           <div class="flex items-center gap-3">
-            <input type="color" [ngModel]="form().avatar_color"
+            <input type="color" title="Avatar color picker" [ngModel]="form().avatar_color"
                    (ngModelChange)="form.set({ ...form(), avatar_color: $event })"
                    class="h-10 w-14 bg-zinc-900 border border-zinc-800 rounded-lg cursor-pointer" />
-            <input type="text" [ngModel]="form().avatar_color"
+            <input type="text" title="Avatar color hex" placeholder="#7c3aed" [ngModel]="form().avatar_color"
                    (ngModelChange)="form.set({ ...form(), avatar_color: $event })"
                    class="px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500 font-mono" />
           </div>
@@ -56,17 +56,25 @@
       <section class="space-y-3">
         <h2 class="text-sm font-semibold uppercase tracking-wide text-zinc-400">Top 5 songs</h2>
         @for (s of songs(); track $index; let i = $index) {
-          <div class="grid grid-cols-12 gap-2 items-center">
-            <span class="col-span-1 text-zinc-500 text-sm">#{{ i + 1 }}</span>
-            <input type="text" placeholder="Title" [ngModel]="s.title"
-                   (ngModelChange)="updateSong(i, 'title', $event)"
-                   class="col-span-5 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
-            <input type="text" placeholder="Album" [ngModel]="s.album"
-                   (ngModelChange)="updateSong(i, 'album', $event)"
-                   class="col-span-4 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
-            <input type="number" placeholder="Year" [ngModel]="s.year"
-                   (ngModelChange)="updateSong(i, 'year', $event)"
-                   class="col-span-2 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
+          <div class="p-3 rounded-lg border border-zinc-800/80 bg-zinc-900/30 space-y-2">
+            <div class="grid grid-cols-12 gap-2 items-center">
+              <span class="col-span-1 text-zinc-500 text-sm">#{{ i + 1 }}</span>
+              <input type="text" placeholder="Title" [ngModel]="s.title"
+                     (ngModelChange)="updateSong(i, 'title', $event)"
+                     class="col-span-5 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
+              <input type="text" placeholder="Album" [ngModel]="s.album"
+                     (ngModelChange)="updateSong(i, 'album', $event)"
+                     class="col-span-4 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
+              <input type="number" placeholder="Year" [ngModel]="s.year"
+                     (ngModelChange)="updateSong(i, 'year', $event)"
+                     class="col-span-2 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
+            </div>
+            <div class="grid grid-cols-12 gap-2 items-center">
+              <span class="col-span-1 text-zinc-600 text-xs text-right pr-1">YT</span>
+              <input type="url" placeholder="YouTube URL (optional)" [ngModel]="s.youtubeUrl"
+                     (ngModelChange)="updateSong(i, 'youtubeUrl', $event)"
+                     class="col-span-11 px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white text-sm focus:outline-none focus:border-violet-500" />
+            </div>
           </div>
         }
       </section>
@@ -76,7 +84,7 @@
       }
 
       <div class="flex gap-3 pt-2">
-        <button (click)="save()" [disabled]="saving()"
+        <button type="button" (click)="save()" [disabled]="saving()"
                 class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-violet-500 to-pink-500 text-white text-sm font-medium hover:opacity-90 disabled:opacity-50 transition">
           {{ saving() ? 'Saving…' : 'Save' }}
         </button>

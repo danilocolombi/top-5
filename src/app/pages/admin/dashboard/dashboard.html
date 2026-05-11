@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-bold text-white">Admin</h1>
         <p class="text-zinc-500 text-sm mt-1">Signed in as {{ email() }}</p>
       </div>
-      <button (click)="signOut()" class="text-xs text-zinc-400 hover:text-white">Sign out</button>
+      <button type="button" (click)="signOut()" class="text-xs text-zinc-400 hover:text-white">Sign out</button>
     </div>
 
     <section class="mb-10">
@@ -41,12 +41,12 @@
           <div class="flex items-center gap-3 p-3 hover:bg-zinc-900/50">
             <div class="w-9 h-9 rounded-lg shrink-0" [style.background]="artist.avatarColor"></div>
             <div class="min-w-0 flex-1">
-              <p class="text-white text-sm font-medium truncate">{{ artist.name }}</p>
+              <p class="text-white text-sm font-medium truncate">{{ artist.name | titlecase }}</p>
               <p class="text-zinc-500 text-xs truncate">{{ artist.genres.join(' · ') }} · {{ artist.songs.length }} songs</p>
             </div>
             <a [routerLink]="['/admin/artist', artist.slug]"
                class="px-2.5 py-1 rounded-md text-xs text-zinc-300 hover:text-white hover:bg-zinc-800">Edit</a>
-            <button (click)="deleteArtist(artist.id, artist.name)"
+            <button type="button" (click)="deleteArtist(artist.id, artist.name)"
                     class="px-2.5 py-1 rounded-md text-xs text-red-400 hover:text-red-300 hover:bg-red-950/50">
               Delete
             </button>

@@ -1,13 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Location, TitleCasePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ArtistService } from '../../services/artist.service';
 import { SeoService } from '../../services/seo.service';
 import { Artist } from '../../models/artist.model';
+import { SongPlayer } from '../../components/song-player/song-player';
 
 @Component({
   selector: 'app-artist-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, TitleCasePipe, SongPlayer],
   templateUrl: './artist-detail.html',
 })
 export class ArtistDetail implements OnInit {

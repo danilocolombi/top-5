@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ArtistService } from '../../../services/artist.service';
@@ -8,12 +9,13 @@ interface PickRow {
   title: string;
   album: string;
   year: string;
+  youtubeUrl: string;
   artistId: number | null;
 }
 
 @Component({
   selector: 'app-admin-picks-edit',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TitleCasePipe],
   templateUrl: './picks-edit.html',
 })
 export class AdminPicksEdit implements OnInit {
@@ -26,12 +28,73 @@ export class AdminPicksEdit implements OnInit {
   weekOf = signal('');
   editorNote = signal('');
   songs = signal<PickRow[]>(
-    Array.from({ length: 5 }, () => ({ title: '', album: '', year: '', artistId: null })),
+    Array.from({ length: 5 }, () => ({ title: '', album: '', year: '', youtubeUrl: '', artistId: null })),
   );
   saving = signal(false);
   error = signal<string | null>(null);
 
+  showNewArtist = signal(false);
+  newArtistName = signal('');
+  newArtistGenres = signal('');
+  newArtistColor = signal('#7c3aed');
+  newArtistError = signal<string | null>(null);
+  creatingArtist = signal(false);
+
   artists = this.artistService.artists;
+
+  private slugify(name: string): string {
+    return name
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  toggleNewArtist(): void {
+    this.showNewArtist.update(v => !v);
+    this.newArtistError.set(null);
+  }
+
+  async createArtist(): Promise<void> {
+    this.newArtistError.set(null);
+    const name = this.newArtistName().trim();
+    if (!name) {
+      this.newArtistError.set('Name is required.');
+      return;
+    }
+    const slug = this.slugify(name);
+    if (!slug) {
+      this.newArtistError.set('Could not generate slug from name.');
+      return;
+    }
+    const genres = this.newArtistGenres()
+      .split(',')
+      .map(g => g.trim())
+      .filter(Boolean);
+
+    this.creatingArtist.set(true);
+    try {
+      const id = await this.admin.createArtist({
+        slug,
+        name,
+        genres,
+        bio: null,
+        avatar_color: this.newArtistColor(),
+      });
+      await this.admin.refresh();
+      const firstEmpty = this.songs().findIndex(r => !r.artistId);
+      if (firstEmpty >= 0) this.updateRow(firstEmpty, 'artistId', id);
+      this.newArtistName.set('');
+      this.newArtistGenres.set('');
+      this.newArtistColor.set('#7c3aed');
+      this.showNewArtist.set(false);
+    } catch (e: any) {
+      this.newArtistError.set(e?.message ?? 'Create failed.');
+    } finally {
+      this.creatingArtist.set(false);
+    }
+  }
 
   ngOnInit(): void {
     const k = this.route.snapshot.paramMap.get('kind') as 'weekly' | 'throwback' | null;
@@ -49,6 +112,7 @@ export class AdminPicksEdit implements OnInit {
         title: s?.title ?? '',
         album: s?.album ?? '',
         year: s?.year != null ? String(s.year) : '',
+        youtubeUrl: s?.youtubeUrl ?? '',
         artistId: s?.artist.id ?? null,
       };
     });
@@ -81,6 +145,7 @@ export class AdminPicksEdit implements OnInit {
         title: r.title.trim(),
         album: r.album.trim() || null,
         year: r.year ? Number(r.year) : null,
+        youtube_url: r.youtubeUrl.trim() || null,
         artist_id: r.artistId,
       });
     }

@@ -28,7 +28,7 @@ export class ArtistService {
     const songsByArtist = new Map<number, Song[]>();
     for (const s of songsRes.data ?? []) {
       const list = songsByArtist.get(s.artist_id) ?? [];
-      list.push({ rank: s.rank, title: s.title, album: s.album ?? undefined, year: s.year ?? undefined });
+      list.push({ rank: s.rank, title: s.title, album: s.album ?? undefined, year: s.year ?? undefined, youtubeUrl: s.youtube_url ?? undefined });
       songsByArtist.set(s.artist_id, list);
     }
     for (const list of songsByArtist.values()) list.sort((a, b) => a.rank - b.rank);
@@ -57,6 +57,7 @@ export class ArtistService {
           title: s.title,
           album: s.album ?? undefined,
           year: s.year ?? undefined,
+          youtubeUrl: s.youtube_url ?? undefined,
           artist: artistById.get(s.artist_id)!,
         }));
       return { weekOf: meta.week_of, editorNote: meta.editor_note ?? undefined, songs };

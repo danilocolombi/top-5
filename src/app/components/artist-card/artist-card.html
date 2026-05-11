@@ -11,7 +11,7 @@
       </div>
       <div class="min-w-0 flex-1">
         <h3 class="text-white font-semibold text-base leading-tight truncate group-hover:text-violet-300 transition-colors">
-          {{ artist().name }}
+          {{ artist().name | titlecase }}
         </h3>
         <p class="text-zinc-500 text-xs mt-0.5 truncate">{{ artist().genres.join(' · ') }}</p>
       </div>
@@ -20,7 +20,7 @@
       @for (song of artist().songs; track song.rank) {
         <li class="flex items-baseline gap-2 text-sm">
           <span class="text-zinc-600 font-mono w-4 shrink-0 text-right">{{ song.rank }}</span>
-          <span class="text-zinc-300 truncate">{{ song.title }}</span>
+          <span class="text-zinc-300 truncate">{{ song.title | titlecase }}</span>
         </li>
       }
     </ol>

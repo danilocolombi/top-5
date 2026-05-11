@@ -3,6 +3,7 @@ export interface Song {
   title: string;
   album?: string;
   year?: number;
+  youtubeUrl?: string;
 }
 
 export interface Artist {
@@ -20,6 +21,7 @@ export interface WeeklyPickSong {
   title: string;
   album?: string;
   year?: number;
+  youtubeUrl?: string;
   artist: Artist;
 }
 
