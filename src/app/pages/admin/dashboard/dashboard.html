@@ -41,10 +41,21 @@
         </a>
       </div>
 
+      <div class="mb-3">
+        <input
+          type="search"
+          [ngModel]="filterQuery()"
+          (ngModelChange)="filterQuery.set($event)"
+          placeholder="Filter by name…"
+          class="w-full sm:w-64 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500"
+        />
+      </div>
+
       <div class="border border-zinc-800 rounded-xl overflow-hidden divide-y divide-zinc-800">
-        @for (artist of artists(); track artist.id) {
+        @for (artist of filteredArtists(); track artist.id) {
           <div class="flex items-center gap-3 p-3 hover:bg-zinc-900/50">
-            <div class="w-9 h-9 rounded-lg shrink-0" [style.background]="artist.avatarColor"></div>
+            <div class="w-9 h-9 rounded-lg shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                 [style.background]="artist.avatarColor">{{ initials(artist.name) }}</div>
             <div class="min-w-0 flex-1">
               <p class="text-white text-sm font-medium truncate">{{ artist.name | titlecase }}</p>
               <p class="text-zinc-500 text-xs truncate">{{ artist.genres.join(' · ') }} · {{ artist.songs.length }} songs</p>
@@ -57,7 +68,7 @@
             </button>
           </div>
         } @empty {
-          <p class="p-6 text-center text-sm text-zinc-500">No artists yet.</p>
+          <p class="p-6 text-center text-sm text-zinc-500">{{ filterQuery() ? 'No artists match your search.' : 'No artists yet.' }}</p>
         }
       </div>
     </section>
